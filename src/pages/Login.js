@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { createUser } from '../services/userAPI';
-import Loading from '../pages/Loading';
+import Loading from './Loading';
 
 class Login extends Component {
   constructor() {
@@ -10,6 +10,7 @@ class Login extends Component {
       login: '',
       disabledButton: true,
       loading: false,
+      redirect: false,
     };
   }
 
@@ -33,13 +34,20 @@ class Login extends Component {
 
     handleClick = () => {
       const { login } = this.state;
-      createUser({ name: login });
-      this.setState(
-        { loading: true },
-      );
+      this.setState({
+        loading: true,
+      },
+      async () => {
+        await createUser({ name: login });
+        this.setState({
+          loading: false,
+          redirect: true,
+          /* set state recupera e modifica estados iniciais, sendo possivel alterar quantos estados iniciais forem necessários */
+        });
+      });
     }
 
-     /* async loadingScreen() {
+    /* async loadingScreen() {
       const { loading } = this.state;
       this.setState(
         { loading: true },
@@ -48,41 +56,41 @@ class Login extends Component {
     }  */
 
     render() {
-      const { disabledButton, loading } = this.state;
-      const loadingElement = <span>Loading...</span>;
+      const { disabledButton, loading, redirect } = this.state;
       return (
         <div data-testid="page-login">
           <h3>Login</h3>
           <form>
             <label htmlFor="login-name">
               <div>
-                  {
-                    { 
-                      loading  
-                        ? loadingElement
-                        : 
-                        (<>
-                          <input
-                            className="yourNameHere"
-                            type="text"
-                            name="login"
-                            data-testid="login-name-input"
-                            onChange={ this.handleChange }
-                          />
-                          <button
-                            data-testid="login-submit-button"
-                            type="button"
-                            disabled={ disabledButton }
-                            onClick={ this.handleClick }
-                          >
-                            Entrar
-                          </button>
-                        </>)
-                  }
-                  }
-                  const { loading } = this.state;
-      
+                {
+                  loading
+                    ? <Loading />
+                    : (
+                      <>
+                        <input
+                          className="yourNameHere"
+                          type="text"
+                          name="login"
+                          data-testid="login-name-input"
+                          onChange={ this.handleChange }
+                        />
+                        <button
+                          data-testid="login-submit-button"
+                          type="button"
+                          disabled={ disabledButton }
+                          onClick={ this.handleClick }
+                        >
+                          Entrar
+                        </button>
+                      </>
+                    )
+                }
+                {redirect && <Redirect to="/search" />}
               </div>
+              const
+              { loading }
+              = this.state;
             </label>
           </form>
         </div>
