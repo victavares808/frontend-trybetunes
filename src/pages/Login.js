@@ -88,9 +88,6 @@ class Login extends Component {
                 }
                 {redirect && <Redirect to="/search" />}
               </div>
-              const
-              { loading }
-              = this.state;
             </label>
           </form>
         </div>
