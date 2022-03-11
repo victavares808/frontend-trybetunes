@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { getUser } from '../services/userAPI';
 import Loading from '../pages/Loading';
+import Search from '../pages/Search';
+import Favorites from '../pages/Favorites';
+import Profile from '../pages/Profile';
 
 class Header extends Component {
   constructor() {
@@ -20,6 +24,9 @@ class Header extends Component {
     const { loading, responseCheck } = this.state;
     return (
       <>
+        <Link to="/search" data-testid="link-to-search">Search</Link>
+        <Link to="/favorites" data-testid="link-to-favorites">Favorites</Link>
+        <Link to="/profile" data-testid="link-to-profile">Profile</Link>
         <header data-testid="header-component">TrybeTunes</header>
         { !loading ? <Loading />
           : (
