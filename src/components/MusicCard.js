@@ -5,6 +5,13 @@ import React, { Component } from 'react';
 Sobre <code> ref -> https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/code
  */
 class MusicCard extends Component {
+/*   constructor () {
+    super();
+    this.state = {
+      loading
+    };
+  } */
+
   render() {
     const { trackInfo, previewtrack } = this.props;
     return (
