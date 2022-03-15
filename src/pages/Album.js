@@ -53,6 +53,8 @@ class Album extends Component {
             <h3 data-testid="artist-name">{artist}</h3>
             {musics.map((song) => (
               <MusicCard
+                id={ song.trackId }
+                previewSong={ song.previewUrl }
                 key={ song.trackId }
                 music={ musics }
                 trackInfo={ song.trackName }
@@ -68,7 +70,7 @@ class Album extends Component {
 Album.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
     }),
   }),
 };

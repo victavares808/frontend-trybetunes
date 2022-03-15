@@ -47,13 +47,13 @@ class Login extends Component {
       });
     }
 
-    /* async loadingScreen() {
+    async loadingScreen() {
       const { loading } = this.state;
       this.setState(
         { loading: true },
       );
       return loading;
-    }  */
+    }
 
     render() {
       const { disabledButton, loading, redirect } = this.state;
