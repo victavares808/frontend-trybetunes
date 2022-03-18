@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
+
 /* Sobre <audio> <track> </audio>
  ref->https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/track
 Sobre <code> ref -> https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/code
@@ -10,19 +11,23 @@ class MusicCard extends Component {
     super();
     this.state = {
       loadingMessage: false,
-      favorited: false,
+      favSongs: [],
     };
   }
 
   FavoriteButtonValidation= (event) => {
     const { music } = this.props;
-    console.log(music);
+    const musicId = music.find((song) => (song.trackId === +event.target.id));
+    console.log();
     this.setState({
       loadingMessage: true,
-      favorited: event.target.checked,
     }, async () => {
-      await addSong(music);
+      if (event.target.checked) {
+        await addSong(musicId);
+      } else { removeSong(musicId); }
+      const favorites = await getFavoriteSongs();
       this.setState({
+        favSongs: favorites,
         loadingMessage: false,
       });
     });
@@ -32,7 +37,7 @@ class MusicCard extends Component {
     const { trackInfo } = this.props;
     const { previewSong } = this.props;
     const { id } = this.props;
-    const { favorited, loadingMessage } = this.state;
+    const { favSongs, loadingMessage } = this.state;
     const showLoadingMessage = <p>Carregando...</p>;
 
     return (
@@ -53,11 +58,11 @@ class MusicCard extends Component {
             </audio>
             <label htmlFor={ id }>
               <input
-                id={ previewSong }
+                id={ id }
                 type="checkbox"
                 data-testid={ `checkbox-music-${id}` }
                 onChange={ this.FavoriteButtonValidation }
-                checked={ favorited }
+                checked={ favSongs.some((element) => element.trackId === id) }
               />
               Favorita
             </label>
@@ -71,15 +76,8 @@ class MusicCard extends Component {
 MusicCard.propTypes = {
   trackInfo: PropTypes.string.isRequired,
   previewSong: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  music: PropTypes.shape({
-    trackName: PropTypes.string.isRequired,
-    previewUrl: PropTypes.string.isRequired,
-  }),
-};
-
-MusicCard.defaultProps = {
-  music: {},
+  id: PropTypes.number.isRequired,
+  music: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default MusicCard;
