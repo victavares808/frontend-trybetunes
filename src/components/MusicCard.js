@@ -15,16 +15,22 @@ class MusicCard extends Component {
     };
   }
 
+  async componentDidMount() {
+    const favorites = await getFavoriteSongs();
+    this.setState({
+      favSongs: favorites,
+    });
+  }
+
   FavoriteButtonValidation= (event) => {
     const { music } = this.props;
     const musicId = music.find((song) => (song.trackId === +event.target.id));
-    console.log();
     this.setState({
       loadingMessage: true,
     }, async () => {
       if (event.target.checked) {
         await addSong(musicId);
-      } else { removeSong(musicId); }
+      } else { await removeSong(musicId); }
       const favorites = await getFavoriteSongs();
       this.setState({
         favSongs: favorites,
@@ -39,7 +45,7 @@ class MusicCard extends Component {
     const { id } = this.props;
     const { favSongs, loadingMessage } = this.state;
     const showLoadingMessage = <p>Carregando...</p>;
-
+    console.log(favSongs);
     return (
       <section>
         {loadingMessage ? (
