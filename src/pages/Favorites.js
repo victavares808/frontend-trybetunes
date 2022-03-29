@@ -6,20 +6,20 @@ class Favorites extends Component {
   constructor() {
     super();
     this.state = {
-      loadingMessage: false,
-      songLoad: [],
+    /*   loadingMessage: false,
+      songLoad: [], */
     };
   }
 
   componentDidMount() {
     getFavoriteSongs();
     this.setState({
-      loadingMessage: true,
+    /*   loadingMessage: true, */
     }, async () => {
-      const favorites = await getFavoriteSongs();
+      /* const favorites = await getFavoriteSongs(); */
       this.setState({
-        songLoad: favorites,
-        loadingMessage: false,
+        /*  songLoad: favorites,
+        loadingMessage: false, */
       });
     });
   }
